@@ -1,0 +1,74 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8; fill-column: 80 -*-
+
+require 'ligo'
+
+id = {
+  manufacturer: 'Ligo',
+  model:        'VirtualAccessory',
+  description:  'PC acts as an accessory!',
+  version:      '0.1',
+  uri:          'http://blog.renaud.io',
+  serial:       '3678000012345678'
+}
+
+Ligo::Logging.configure_logger_output('/tmp/ligo-sample.log')
+ctx = Ligo::Context.new
+acc = Ligo::Accessory.new(id)
+dev = ctx.devices.first
+
+begin
+  if dev.attach_accessory(acc)
+
+    dev.process do |handle|
+
+      puts <<-eof
+
+The selected android device should now ask to switch to Accessory Mode.
+The default log file is /tmp/ligo.log.
+Once you have accepted: type some strings and send them to the selected device by hitting Enter
+(use Ctrl-C to quit):
+
+eof
+
+      mutex = Mutex.new
+
+      reader_t = Thread.new do
+        loop do
+          res = nil
+          mutex.synchronize do
+            output_string = dev.recv(1024)
+            unless output_string.nil?
+              puts "IN  -- String received: #{output_string}"
+            end
+          end
+          # get some time to write data if any
+          sleep 0.2
+        end
+      end
+
+      writer_t = Thread.new do
+        loop do
+          if s = gets
+            mutex.synchronize do
+              bytes_sent = dev.send(s)
+              if bytes_sent == s.bytesize
+                puts "OUT -- String '#{s.chomp}' of size #{bytes_sent} bytes successfully sent"
+              else
+                puts "OUT -- Error / String '#{s.chomp}' of size #{bytes_sent} bytes not successfully sent"
+              end
+            end
+          end
+        end
+      end
+
+      reader_t.join
+      writer_t.join
+
+    end
+
+  end
+rescue SystemExit, Interrupt => e
+  puts "#{e.message} ⇒ Exit"
+  Thread.list.each { |t| t.exit }
+end
