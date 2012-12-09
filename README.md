@@ -1,4 +1,5 @@
-# ligo
+<!--- coding: utf-8; fill-column: 80 --->
+# ligō
 
 * [Homepage](https://github.com/nibua-r/ligo#readme)
 * [Issues](https://github.com/nibua-r/ligo/issues)
