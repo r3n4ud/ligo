@@ -79,6 +79,13 @@ As soon as the ligō gem is released, you shall install by using:
 
     $ gem install ligo
 
+## Pending tasks
+
+* Write the specs and automate testing!
+* Provide an Android demo application
+* Improve the documentation
+* Push the gem to rubygems.org
+
 ## Copyright
 
 Copyright (c) 2012 Renaud AUBIN
