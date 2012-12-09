@@ -20,6 +20,15 @@ require 'libusb'
 
 require 'ligo/version'
 
+# Ligo module.
+#
+# This module contains the Android Open Accessory Protocol utility classes to
+# enable custom USB I/O with AOAP-compatible devices.
+#
+# @see http://source.android.com/tech/accessories/aoap/aoa.html
+# @see http://source.android.com/tech/accessories/index.html
+# @see
+#  http://developer.android.com/guide/topics/connectivity/usb/accessory.html
 module Ligo
   require 'ligo/logging'
   require 'ligo/constants'

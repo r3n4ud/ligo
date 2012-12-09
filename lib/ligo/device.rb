@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8; fill-column: 80 -*-
 #
 # Copyright (c) 2012 Renaud AUBIN
 #
@@ -22,6 +22,7 @@ module Ligo
   class Device < LIBUSB::Device
     include Logging
 
+    # TODO: Document the attr!
     attr_reader :pDev, :pDevDesc
     attr_reader :aoap_version, :accessory, :in, :out, :handle
 
@@ -47,6 +48,10 @@ module Ligo
       end
     end
 
+    # Simple recv method.
+    # @param [Fixnum] buffer_size
+    #   The buffer size of the received buffer.
+    # @return [String] the received buffer (at most buffer_size bytes).
     def recv(buffer_size)
       begin
         handle.bulk_transfer(endpoint: @in,
@@ -57,15 +62,24 @@ module Ligo
       end
     end
 
-    # Simple write method.
+    # Simple send method.
     # @param [String] data
     #   The data to be sent.
+    # @return [Fixnum] the number of bytes sent.
     def send(data)
       # TODO: Add timeout param?
       handle.bulk_transfer(endpoint: @out, dataOut: data)
     end
 
-
+    # Associate an AOAP compatible device with a virtual accessory and switch the Android device
+    # to accessory mode.
+    #
+    # Prepare an OAP compatible device to interact with a given {Ligo::Accessory}:
+    # * Switch the current assigned device to accessory mode
+    # * Set the I/O endpoints
+    # @param [Ligo::Accessory] accessory
+    #   The virtual accessory to be associated with the Android device.
+    # @return [true, false] true for success, false otherwise.
     def attach_accessory(accessory)
       logger.debug "attach_accessory(#{accessory})"
 
@@ -99,6 +113,8 @@ module Ligo
       true
     end
 
+    # Send identifying string information to the device and request the device start up in accessory
+    # mode.
     def start_accessory_mode
       logger.debug 'start_accessory_mode'
       sn = self.serial_number
@@ -113,6 +129,9 @@ module Ligo
       wait_and_retrieve_by_serial(sn)
     end
 
+    # Set the device's configuration to a value of 1 with a SET_CONFIGURATION (0x09) device
+    # request.
+    # @return [true, false] true for success, false otherwise.
     def set_configuration
       logger.debug 'set_configuration'
       res = nil
@@ -134,6 +153,84 @@ module Ligo
       end
     end
 
+    # Check if the current {Ligo::Device} is in accessory mode.
+    # @return [true, false] true if the {Ligo::Device} is in accessory mode,
+    #   false otherwise.
+    def accessory_mode?
+      self.idVendor == GOOGLE_VID
+    end
+
+    # Check if the current {Ligo::Device} supports AOAP.
+    # @return [true, false] true if the {Ligo::Device} supports AOAP, false
+    #   otherwise.
+    def aoap?
+      @aoap_version = self.get_protocol
+      logger.info "#{self.inspect} supports AOAP version #{@aoap_version}."
+      @aoap_version >= 1
+    end
+
+    # Check if the current {Ligo::Device} is in UMS mode.
+    # @return [true, false] true if the {Ligo::Device} is in UMS mode, false
+    #   otherwise.
+    def uas?
+      if RUBY_PLATFORM=~/linux/i
+        # http://cateee.net/lkddb/web-lkddb/USB_UAS.html
+        (self.settings[0].bInterfaceClass == 0x08) &&
+          (self.settings[0].bInterfaceSubClass == 0x06)
+      else
+        false
+      end
+    end
+
+    # Send a 51 control request ("Get Protocol") to figure out if the device
+    # supports the Android accessory protocol.
+    # @return [Fixnum] the AOAP protocol version supported by the device (0 for
+    #   no AOAP support).
+    def get_protocol
+      logger.debug 'get_protocol'
+      res, version = 0, 0
+      self.open do |h|
+
+        h.detach_kernel_driver(0) if self.uas? && h.kernel_driver_active?(0)
+        req_type = LIBUSB::ENDPOINT_IN | LIBUSB::REQUEST_TYPE_VENDOR
+        res = h.control_transfer(bmRequestType: req_type,
+                                 bRequest: COMMAND_GETPROTOCOL,
+                                 wValue: 0x0, wIndex: 0x0, dataIn: 2)
+
+        version = res.unpack('S')[0]
+      end
+
+      (res.size == 2 && version >= 1 ) ? version : 0
+    end
+
+    # Send identifying string information to the device.
+    def send_accessory_id
+      logger.debug 'send_accessory_id'
+      req_type = LIBUSB::ENDPOINT_OUT | LIBUSB::REQUEST_TYPE_VENDOR
+      @accessory.each do |k,v|
+        # Ensure the string is terminated by a null char
+        s = "#{v}\0"
+        r = @handle.control_transfer(bmRequestType: req_type,
+                                     bRequest: COMMAND_SENDSTRING, wValue: 0x0,
+                                     wIndex: @accessory.keys.index(k), dataOut: s)
+
+        # TODO: Manage an exception there. This should terminate the program.
+        logger.error "Failed to send #{k} string:" unless r == s.size
+      end
+    end
+    private :send_accessory_id
+
+    # Request the device start up in accessory mode
+    def send_start
+      logger.debug 'send_start'
+      req_type = LIBUSB::ENDPOINT_OUT | LIBUSB::REQUEST_TYPE_VENDOR
+      res = @handle.control_transfer(bmRequestType: req_type,
+                                     bRequest: COMMAND_START, wValue: 0x0,
+                                     wIndex: 0x0, dataOut: nil)
+    end
+    private :send_start
+
+    # Internal use only.
     def wait_and_retrieve_by_serial(sn)
       sleep REENUMERATION_DELAY
       # The device should now reappear on the usb bus with the Google vendor id.
@@ -156,67 +253,7 @@ module Ligo
                      ].join
       end
     end
-
-    def accessory_mode?
-      self.idVendor == GOOGLE_VID
-    end
-
-    def aoap?
-      @aoap_version = self.get_protocol
-      logger.info "#{self.inspect} supports AOAP version #{@aoap_version}."
-      @aoap_version >= 1
-    end
-
-    def uas?
-      if RUBY_PLATFORM=~/linux/i
-        # http://cateee.net/lkddb/web-lkddb/USB_UAS.html
-        (self.settings[0].bInterfaceClass == 0x08) &&
-          (self.settings[0].bInterfaceSubClass == 0x06)
-      else
-        false
-      end
-    end
-
-    def get_protocol
-      logger.debug 'get_protocol'
-      res, version = 0, 0
-      self.open do |h|
-
-        h.detach_kernel_driver(0) if self.uas? && h.kernel_driver_active?(0)
-        req_type = LIBUSB::ENDPOINT_IN | LIBUSB::REQUEST_TYPE_VENDOR
-        res = h.control_transfer(bmRequestType: req_type,
-                                 bRequest: COMMAND_GETPROTOCOL,
-                                 wValue: 0x0, wIndex: 0x0, dataIn: 2)
-
-        version = res.unpack('S')[0]
-      end
-
-      (res.size == 2 && version >= 1 ) ? version : 0
-    end
-
-    def send_accessory_id
-      logger.debug 'send_accessory_id'
-      req_type = LIBUSB::ENDPOINT_OUT | LIBUSB::REQUEST_TYPE_VENDOR
-      @accessory.each do |k,v|
-        # Ensure the string is terminated by a null char
-        s = "#{v}\0"
-        r = @handle.control_transfer(bmRequestType: req_type,
-                                     bRequest: COMMAND_SENDSTRING, wValue: 0x0,
-                                     wIndex: @accessory.keys.index(k), dataOut: s)
-
-        # TODO: Manage an exception there. This should terminate the program.
-        logger.error "Failed to send #{k} string:" unless r == s.size
-      end
-    end
-
-    def send_start
-      logger.debug 'send_start'
-      req_type = LIBUSB::ENDPOINT_OUT | LIBUSB::REQUEST_TYPE_VENDOR
-      res = @handle.control_transfer(bmRequestType: req_type,
-                                     bRequest: COMMAND_START, wValue: 0x0,
-                                     wIndex: 0x0, dataOut: nil)
-    end
-
+    private :wait_and_retrieve_by_serial
 
   end
 

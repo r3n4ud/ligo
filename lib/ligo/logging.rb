@@ -19,7 +19,11 @@ require 'logger'
 
 module Ligo
 
+  # Logging module.
+  #
+  # This module enables to share the same logger between all the Ligo classes.
   module Logging
+
     def logger
       @logger ||= Logging.logger_for(self.class.name)
     end
@@ -39,6 +43,7 @@ module Ligo
         logger
       end
 
+      #
       def configure_logger_output(logout)
         @out = logout if logout != 'STDOUT'
       end

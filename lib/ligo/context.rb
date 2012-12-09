@@ -15,6 +15,9 @@
 # limitations under the License.
 #
 
+# TODO: Add a proper mention to libusb LGPL licensing since the following code
+# is a derivative work of Lars Kanis LIBUSB::Context.
+
 module Ligo
 
   class Context < LIBUSB::Context
@@ -27,12 +30,14 @@ module Ligo
       pDevs = []
       size.times do |devi|
         pDev = ppDevs.get_pointer(devi*FFI.type_size(:pointer))
+        # Use Ligo::Device instead of LIBUSB::Device
         device = Ligo::Device.new(self, pDev)
         if VENDOR_IDS.include?(device.idVendor)
           begin
+            # Include only AOAP compatible devices
             pDevs << device if device.aoap?
           rescue LIBUSB::ERROR_ACCESS
-            # log
+            # TODO: do something about this exception, log at least!
           end
         end
       end
