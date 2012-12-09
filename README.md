@@ -7,7 +7,9 @@
 
 ## Description
 
-TODO: Description
+ligō is a ruby gem implementing the
+[Android Open Accessory Protocol](http://source.android.com/tech/accessories/aoap/aoa.html) to
+interact with Android devices via USB.
 
 ## Features
 
