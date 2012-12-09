@@ -84,7 +84,7 @@ As soon as the ligō gem is released, you shall install by using:
 * Write the specs and automate testing!
 * Provide an Android demo application
 * Improve the documentation
-* Push the gem to rubygems.org
+* Release and push the gem to rubygems.org
 
 ## Copyright
 
