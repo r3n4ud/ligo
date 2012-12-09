@@ -28,4 +28,4 @@ interact with Android devices via USB.
 
 Copyright (c) 2012 Renaud AUBIN
 
-See {file:LICENSE} for details.
+See {file:LICENSE.txt} for details.
