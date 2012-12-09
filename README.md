@@ -22,6 +22,8 @@ Just USB I/O using the Android Open Accessory Protocol…
 ## Examples
 
 ```ruby
+require 'ligo'
+
 id = {
   manufacturer: 'Ligo',
   model:        'VirtualAccessory',
