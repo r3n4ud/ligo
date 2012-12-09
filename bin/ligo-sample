@@ -25,7 +25,7 @@ begin
       puts <<-eof
 
 The selected android device should now ask to switch to Accessory Mode.
-The default log file is /tmp/ligo.log.
+The log file is /tmp/ligo-sample.log.
 Once you have accepted: type some strings and send them to the selected device by hitting Enter
 (use Ctrl-C to quit):
 
