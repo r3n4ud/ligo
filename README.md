@@ -37,7 +37,7 @@ Ligo::Logging.configure_logger_output('/tmp/ligo-sample.log')
 ctx = Ligo::Context.new
 acc = Ligo::Accessory.new(id)
 
-# You could inpect the Android devices list
+# You could inspect the Android devices list
 puts ctx.devices.inspect
 
 # Take the first one
