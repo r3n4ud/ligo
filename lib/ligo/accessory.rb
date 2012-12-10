@@ -34,6 +34,8 @@ module Ligo
 
     def initialize(id = DEFAULT_ID)
 
+      raise ArgumentError, '#new must be called with a Hash' unless id.is_a? Hash
+
       required_ids = [:manufacturer, :model, :description, :version, :uri, :serial]
       required_ids.each do |sym|
         raise ArgumentError, "Missing argument: #{sym}" unless id.include? sym
