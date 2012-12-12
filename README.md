@@ -12,8 +12,9 @@ ligō is a ruby gem implementing the
 [Android Open Accessory Protocol](http://source.android.com/tech/accessories/aoap/aoa.html)
 to interact with Android devices via USB.
 
-Android-side application is needed to make some use of this project.
-A sample LigoTextDemo Android application will be released soon.
+Android-side application is needed to make some use of this project. A
+[sample LigoTextDemo Android application](https://github.com/nibua-r/LigoTextDemo)
+is available for usage demonstration.
 
 ## Features
 
@@ -64,8 +65,9 @@ At the time of writing, ligō focuses on the GNU/Linux operating system and
 YARV/MRI ruby. ligō has been developed and tested on Debian GNU/Linux with ruby
 1.9.3p327.
 
-ligō is useless without Android-side application. A sample LigoTextDemo Android
-application will be released soon to demonstrate the use of that gem.
+ligō is useless without Android-side application. A
+[sample LigoTextDemo Android application](https://github.com/nibua-r/LigoTextDemo)
+is available for usage demonstration.
 
 ## Install
 
