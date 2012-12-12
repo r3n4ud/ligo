@@ -215,7 +215,7 @@ module Ligo
                                      wIndex: @accessory.keys.index(k), dataOut: s)
 
         # TODO: Manage an exception there. This should terminate the program.
-        logger.error "Failed to send #{k} string:" unless r == s.size
+        logger.error "Failed to send #{k} string" unless r == s.size
       end
     end
     private :send_accessory_id
