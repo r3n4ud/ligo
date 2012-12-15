@@ -17,9 +17,16 @@ ctx = Ligo::Context.new
 acc = Ligo::Accessory.new(id)
 dev = ctx.devices.first
 
-if dev.attach_accessory(acc)
-  dev.process do |handle|
+unless dev
+  puts 'No device found ⇒ Exit'
+  exit
+end
 
+if dev.attach_accessory(acc)
+
+  begin
+
+    dev.process do |handle|
 
       puts <<-eof
 
@@ -30,10 +37,8 @@ Once you have accepted: type some strings and send them to the selected device b
 
 eof
 
-    reader_t = nil
-    writer_t = nil
-
-    begin
+      reader_t = nil
+      writer_t = nil
 
       mutex = Mutex.new
 
@@ -71,12 +76,12 @@ eof
       reader_t.join
       writer_t.join
 
-    rescue SystemExit, Interrupt => e
-      puts "#{e.message} ⇒ Exit"
-      reader_t.exit unless reader_t.nil?
-      writer_t.exit unless writer_t.nil?
     end
 
+  rescue SystemExit, Interrupt => e
+    puts "#{e.message} ⇒ Exit"
+    Thread.list.each { |t| t.exit }
   end
+
 
 end
