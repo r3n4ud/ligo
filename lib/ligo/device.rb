@@ -48,6 +48,32 @@ module Ligo
       end
     end
 
+    # Simple write method (blocking until timeout).
+    # @param [Fixnum] buffer_size
+    #   The number of bytes expected to be received.
+    # @param [Fixnum] timeout
+    #   The timeout in ms (default: 1000). 0 for an infinite timeout.
+    # @return [String] the received buffer (at most buffer_size bytes).
+    # @raise [LIBUSB::ERROR_TIMEOUT] in case of timeout.
+    def read(buffer_size, timeout = 1000)
+      handle.bulk_transfer(endpoint: @in,
+                           dataIn: buffer_size,
+                           timeout: timeout)
+    end
+
+    # Simple write method (blocking until timeout).
+    # @param [String] buffer
+    #   The buffer to be sent.
+    # @param [Fixnum] timeout
+    #   The timeout in ms (default: 1000). 0 for an infinite timeout.
+    # @return [Fixnum] the number of bytes actually sent.
+    # @raise [LIBUSB::ERROR_TIMEOUT] in case of timeout.
+    def write(buffer, timeout = 1000)
+        handle.bulk_transfer(endpoint: @in,
+                             dataOut: buffer,
+                             timeout: timeout)
+    end
+
     # Simple recv method.
     # @param [Fixnum] buffer_size
     #   The buffer size of the received buffer.
