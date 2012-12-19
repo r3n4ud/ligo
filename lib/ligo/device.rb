@@ -48,14 +48,14 @@ module Ligo
       end
     end
 
-    def open
+    def open_and_claim
       @handle = @device.open
       @handle.claim_interface(0)
       @handle.clear_halt(@in)
       @handle
     end
 
-    def close
+    def finalize
       if @handle
         @handle.release_interface(0)
         @handle.close
