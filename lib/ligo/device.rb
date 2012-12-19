@@ -49,7 +49,7 @@ module Ligo
     end
 
     def open_and_claim
-      @handle = @device.open
+      @handle = open
       @handle.claim_interface(0)
       @handle.clear_halt(@in)
       @handle
