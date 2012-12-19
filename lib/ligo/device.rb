@@ -48,6 +48,20 @@ module Ligo
       end
     end
 
+    def open
+      @handle = @device.open
+      @handle.claim_interface(0)
+      @handle.clear_halt(@in)
+      @handle
+    end
+
+    def close
+      if @handle
+        @handle.release_interface(0)
+        @handle.close
+      end
+    end
+
     # Simple write method (blocking until timeout).
     # @param [Fixnum] buffer_size
     #   The number of bytes expected to be received.
