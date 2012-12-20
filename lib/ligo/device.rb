@@ -83,7 +83,7 @@ module Ligo
     # @return [Fixnum] the number of bytes actually sent.
     # @raise [LIBUSB::ERROR_TIMEOUT] in case of timeout.
     def write(buffer, timeout = 1000)
-        handle.bulk_transfer(endpoint: @in,
+        handle.bulk_transfer(endpoint: @out,
                              dataOut: buffer,
                              timeout: timeout)
     end
