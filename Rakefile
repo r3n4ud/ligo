@@ -31,10 +31,30 @@ begin
   gem 'yard', '~> 0.8'
   require 'yard'
 
-  YARD::Rake::YardocTask.new  
+  YARD::Rake::YardocTask.new
 rescue LoadError => e
   task :yard do
     abort "Please run `gem install yard` to install YARD."
   end
 end
 task :doc => :yard
+
+begin
+  gem 'yardstick', '~> 0.8.0'
+
+  require 'yardstick/rake/measurement'
+
+  Yardstick::Rake::Measurement.new(:yardstick_measure) do |measurement|
+    measurement.output = 'doc/measurement_report.txt'
+  end
+
+  require 'yardstick/rake/verify'
+
+  Yardstick::Rake::Verify.new do |verify|
+    verify.threshold = 100
+  end
+rescue LoadError => e
+  task :yardstick do
+    abort "Please run `gem install yardstick` to install yardstick."
+  end
+end
