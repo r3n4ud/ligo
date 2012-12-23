@@ -19,7 +19,7 @@ require 'logger'
 
 module Ligo
 
-  # Logging module.
+  # Logging module
   #
   # This module enables to share the same logger between all the Ligo classes.
   module Logging

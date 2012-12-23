@@ -15,14 +15,20 @@
 # limitations under the License.
 #
 
-# TODO: Add a proper mention to libusb LGPL licensing since the following code
-# is a derivative work of Lars Kanis LIBUSB::Context.
-
 module Ligo
 
+  # This class is a derivative work of `LIBUSB::Context` as included in
+  #   [LIBUSB](https://github.com/larskanis/libusb), written by Lars Kanis and
+  #   released under the LGPLv3.
+  # @author Renaud AUBIN
+  # @api public
   class Context < LIBUSB::Context
     include LIBUSB
 
+    # @api private
+    # Returns the list of AOAP-compatible devices
+    # @return [Array<Ligo::Device>] the list of AOAP-compatible devices
+    #   currently connected on the USB bus.
     def device_list
       pppDevs = FFI::MemoryPointer.new :pointer
       size = Call.libusb_get_device_list(@ctx, pppDevs)
@@ -37,7 +43,7 @@ module Ligo
             # Include only AOAP compatible devices
             pDevs << device if device.aoap?
           rescue LIBUSB::ERROR_ACCESS
-            # TODO: do something about this exception, log at least!
+            # @todo Do something about this exception, log at least!
           end
         end
       end

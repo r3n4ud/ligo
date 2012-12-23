@@ -19,13 +19,49 @@ module Ligo
 
   require 'ligo/constants'
 
+  # This class provides a convenient wrapper class around `LIBUSB::Device` and
+  #   implements the Android Open Accessory Protocol to interact with compatible
+  #   devices.
+  #
+  # This class is a derivative work of `LIBUSB::Device` as included in
+  #   [LIBUSB](https://github.com/larskanis/libusb), written by Lars Kanis and
+  #   released under the LGPLv3.
+  # @author Renaud AUBIN
+  # @api public
   class Device < LIBUSB::Device
     include Logging
 
-    # TODO: Document the attr!
-    attr_reader :pDev, :pDevDesc
-    attr_reader :aoap_version, :accessory, :in, :out, :handle
+    # @api private
+    attr_reader :pDev
 
+    # @api private
+    attr_reader :pDevDesc
+
+    # Returns the version of the AOA protocol that this device supports
+    # @return [Fixnum] the version of the AOA protocol that this device
+    #   supports.
+    attr_reader :aoap_version
+
+    # Returns the associated {Accessory}
+    # @return [Accessory, nil] the associated accessory if any or nil.
+    attr_reader :accessory
+
+    # Returns the accessory mode input endpoint
+    # @return [LIBUSB::Endpoint, nil] the input endpoint or nil if the device is
+    #   not in accessory mode.
+    attr_reader :in
+
+    # Returns the accessory mode output endpoint
+    # @return [LIBUSB::Endpoint, nil] the output endpoint or nil if the device
+    #   is not in accessory mode.
+    attr_reader :out
+
+    # Returns the device handle
+    # @todo Improve the :handle doc
+    # @return [LIBUSB::DevHandle, nil] the device handle or nil.
+    attr_reader :handle
+
+    # @api private
     def initialize context, pDev
       @aoap_version = 0
       @accessory, @in, @out, @handle = nil, nil, nil, nil
@@ -48,6 +84,9 @@ module Ligo
       end
     end
 
+    # Opens an handle and claim the default interface for further operations
+    # @return [LIBUSB::DevHandle] the handle to operate on.
+    # @raise
     def open_and_claim
       @handle = open
       @handle.claim_interface(0)
@@ -55,6 +94,9 @@ module Ligo
       @handle
     end
 
+    # Finalizes the device (release and close)
+    # @return
+    # @raise [LIBUSB::ERROR_TIMEOUT] in case of timeout.
     def finalize
       if @handle
         @handle.release_interface(0)
@@ -62,7 +104,7 @@ module Ligo
       end
     end
 
-    # Simple write method (blocking until timeout).
+    # Simple write method (blocking until timeout)
     # @param [Fixnum] buffer_size
     #   The number of bytes expected to be received.
     # @param [Fixnum] timeout
@@ -153,8 +195,11 @@ module Ligo
       true
     end
 
+    # Switches to accessory mode
+    #
     # Send identifying string information to the device and request the device start up in accessory
     # mode.
+    # @return [true, false] true for success, false otherwise.
     def start_accessory_mode
       logger.debug 'start_accessory_mode'
       sn = self.serial_number
@@ -169,6 +214,8 @@ module Ligo
       wait_and_retrieve_by_serial(sn)
     end
 
+    # Sends a `set configuration` control transfer
+    #
     # Set the device's configuration to a value of 1 with a SET_CONFIGURATION (0x09) device
     # request.
     # @return [true, false] true for success, false otherwise.
@@ -193,14 +240,14 @@ module Ligo
       end
     end
 
-    # Check if the current {Ligo::Device} is in accessory mode.
-    # @return [true, false] true if the {Ligo::Device} is in accessory mode,
-    #   false otherwise.
+    # Check if the current {Device} is in accessory mode
+    # @return [true, false] true if the {Device} is in accessory mode, false
+    #   otherwise.
     def accessory_mode?
       self.idVendor == GOOGLE_VID
     end
 
-    # Check if the current {Ligo::Device} supports AOAP.
+    # Check if the current {Device} supports AOAP
     # @return [true, false] true if the {Ligo::Device} supports AOAP, false
     #   otherwise.
     def aoap?
@@ -209,9 +256,8 @@ module Ligo
       @aoap_version >= 1
     end
 
-    # Check if the current {Ligo::Device} is in UMS mode.
-    # @return [true, false] true if the {Ligo::Device} is in UMS mode, false
-    #   otherwise.
+    # Check if the current {Device} is in UMS mode
+    # @return [true, false] true if the {Device} is in UMS mode, false otherwise
     def uas?
       if RUBY_PLATFORM=~/linux/i
         # http://cateee.net/lkddb/web-lkddb/USB_UAS.html
@@ -222,8 +268,11 @@ module Ligo
       end
     end
 
+    # Sends a `get protocol` control transfer
+    #
     # Send a 51 control request ("Get Protocol") to figure out if the device
-    # supports the Android accessory protocol.
+    #   supports the Android accessory protocol. We assume here that the device
+    #   has not been opened.
     # @return [Fixnum] the AOAP protocol version supported by the device (0 for
     #   no AOAP support).
     def get_protocol
@@ -243,7 +292,11 @@ module Ligo
       (res.size == 2 && version >= 1 ) ? version : 0
     end
 
-    # Send identifying string information to the device.
+    # Sends identifying string information to the device
+    #
+    # We assume here that the device has already been opened.
+    # @api private
+    # @return
     def send_accessory_id
       logger.debug 'send_accessory_id'
       req_type = LIBUSB::ENDPOINT_OUT | LIBUSB::REQUEST_TYPE_VENDOR
@@ -260,7 +313,9 @@ module Ligo
     end
     private :send_accessory_id
 
-    # Request the device start up in accessory mode
+    # Sends AOA protocol start command to the device
+    # @api private
+    # @return [Fixnum]
     def send_start
       logger.debug 'send_start'
       req_type = LIBUSB::ENDPOINT_OUT | LIBUSB::REQUEST_TYPE_VENDOR
@@ -270,7 +325,8 @@ module Ligo
     end
     private :send_start
 
-    # Internal use only.
+    # @api private
+    # @return [true, false] true for success, false otherwise.
     def wait_and_retrieve_by_serial(sn)
       sleep REENUMERATION_DELAY
       # The device should now reappear on the usb bus with the Google vendor id.
@@ -283,6 +339,7 @@ module Ligo
         # Retrieve new pointers (check if the old ones should be dereferenced)
         @pDev = device.pDev
         @pDevDesc = device.pDevDesc
+        true
       else
         logger.error ['Failed to retrieve the device after switching to ',
                       'accessory mode. This may be due to a lack of proper ',
@@ -291,6 +348,7 @@ module Ligo
                       'SUBSYSTEM=="usb", ATTR{idVendor}=="18d1", ',
                       'MODE="0666", GROUP="plugdev"'
                      ].join
+        false
       end
     end
     private :wait_and_retrieve_by_serial
