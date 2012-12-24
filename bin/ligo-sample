@@ -47,7 +47,7 @@ eof
           res = nil
           mutex.synchronize do
             begin
-              output_string = dev.read(1024, 0.1)
+              output_string = dev.read(1024, 200)
               unless output_string.nil?
                 puts "IN  -- String received: #{output_string}"
               end
