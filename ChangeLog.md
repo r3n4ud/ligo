@@ -1,4 +1,3 @@
-### 0.1.0 / 2012-12-06
+### 0.1.0 / 2012-12-24
 
-* Initial release:
-
+* Initial release
