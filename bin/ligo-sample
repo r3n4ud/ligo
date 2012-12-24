@@ -46,9 +46,13 @@ eof
         loop do
           res = nil
           mutex.synchronize do
-            output_string = dev.recv(1024)
-            unless output_string.nil?
-              puts "IN  -- String received: #{output_string}"
+            begin
+              output_string = dev.read(1024, 0.1)
+              unless output_string.nil?
+                puts "IN  -- String received: #{output_string}"
+              end
+            rescue LIBUSB::ERROR_TIMEOUT
+              # do nothing and proceed
             end
           end
           # get some time to write data if any

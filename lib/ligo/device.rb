@@ -116,8 +116,9 @@ module Ligo
                            dataIn: buffer_size,
                            timeout: timeout)
     end
+    alias_method :recv, :read
 
-    # Simple write method (blocking until timeout).
+    # Simple write method (blocking until timeout)
     # @param [String] buffer
     #   The buffer to be sent.
     # @param [Fixnum] timeout
@@ -129,32 +130,9 @@ module Ligo
                              dataOut: buffer,
                              timeout: timeout)
     end
+    alias_method :send, :write
 
-    # Simple recv method.
-    # @param [Fixnum] buffer_size
-    #   The buffer size of the received buffer.
-    # @return [String] the received buffer (at most buffer_size bytes).
-    def recv(buffer_size)
-      begin
-        handle.bulk_transfer(endpoint: @in,
-                             dataIn: buffer_size)
-      rescue LIBUSB::ERROR_TIMEOUT
-        nil
-        # maybe we should implement a internal thread, a sleep and a retry
-      end
-    end
-
-    # Simple send method.
-    # @param [String] data
-    #   The data to be sent.
-    # @return [Fixnum] the number of bytes sent.
-    def send(data)
-      # TODO: Add timeout param?
-      handle.bulk_transfer(endpoint: @out, dataOut: data)
-    end
-
-    # Associate an AOAP compatible device with a virtual accessory and switch the Android device
-    # to accessory mode.
+    # Associates with an accessory and switch to accessory mode
     #
     # Prepare an OAP compatible device to interact with a given {Ligo::Accessory}:
     # * Switch the current assigned device to accessory mode
