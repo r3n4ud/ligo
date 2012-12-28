@@ -94,6 +94,12 @@ Or, you can install it from the github repository:
   sample (already working with the
   [sample LigoTextDemo Android application](https://github.com/nibua-r/LigoTextDemo) and the
   [libusb 0.3.0 gem](https://github.com/larskanis/libusb) async and polling APIs)
+* Create a wiki with FAQ, supported devices listing, UMS/accessory interactions, etc.
+
+## Contributing to ligō
+
+* Follow the usual fork/branch/PR workflow to send changes, if I like them I'll merge them
+* Help me to create a supported device listing
 
 ## Copyright
 
