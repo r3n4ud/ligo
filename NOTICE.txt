@@ -1,6 +1,6 @@
 
    The ligo project
-   Copyright (C) 2012 Renaud AUBIN
+   Copyright (C) 2012, 2013 Renaud AUBIN
 
    This product includes software developed by
    Renaud AUBIN (http://blog.renaud.io/).

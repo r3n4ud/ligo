@@ -97,6 +97,6 @@ Or, you can install it from the github repository:
 
 ## Copyright
 
-Copyright (c) 2012 Renaud AUBIN
+Copyright (c) 2012, 2013 Renaud AUBIN
 
 See {file:LICENSE.txt} for details.
