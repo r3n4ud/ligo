@@ -1,3 +1,4 @@
+# -*- coding: utf-8; fill-column: 80 -*-
 #
 # Copyright (c) 2012 Renaud AUBIN
 #
