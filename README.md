@@ -71,22 +71,25 @@ is available for usage demonstration.
 
 ## Install
 
-ligō is currently under developement, as a consequence you'll need to live on the edge:
+You may install ligō by using:
+
+    $ gem install ligo
+
+Or, you can install it from the github repository:
 
     $ git clone https://github.com/nibua-r/ligo.git
     $ cd ligo
     $ rake install
 
-As soon as the ligō gem is released, you shall install by using:
-
-    $ gem install ligo
 
 ## Pending tasks
 
 * Write the specs and automate testing!
-* Provide an Android demo application
-* Improve the documentation
-* Release and push the gem to rubygems.org
+* <s>Provide an Android demo application</s> → See
+  [sample LigoTextDemo Android application](https://github.com/nibua-r/LigoTextDemo),
+  more to come soon…
+* Improve the documentation → in progress, a first pass has been made…
+* <s>Release and push the gem to rubygems.org</s>
 
 ## Copyright
 
