@@ -90,6 +90,10 @@ Or, you can install it from the github repository:
   more to come soon…
 * Improve the documentation → in progress, a first pass has been made…
 * <s>Release and push the gem to rubygems.org</s>
+* Finalize and publish a [celluloid](https://github.com/celluloid/celluloid)-based write-back usage
+  sample (already working with the
+  [sample LigoTextDemo Android application](https://github.com/nibua-r/LigoTextDemo) and the
+  [libusb 0.3.0 gem](https://github.com/larskanis/libusb) async and polling APIs)
 
 ## Copyright
 
