@@ -201,9 +201,7 @@ module Ligo
       logger.debug 'set_configuration'
       res = nil
       sn = self.serial_number
-      device = @context.devices(idVendor: GOOGLE_VID).collect do |d|
-        d.serial_number == sn ? d : nil
-      end.compact.first
+      get_device(sn)
 
       begin
         device.open_interface(0) do |handle|
@@ -303,15 +301,24 @@ module Ligo
     end
     private :send_start
 
+    # Retrieves an AOAP device by its serial number
+    # @api private
+    # @param [String] sn
+    #   The serial number of the device to be found.
+    # @return [LIBUSB::Device] the device matching the given serial number.
+    def get_device(sn)
+      device = @context.devices(idVendor: GOOGLE_VID).collect do |d|
+        d.serial_number == sn ? d : nil
+      end.compact.first
+    end
+
     # @api private
     # @return [true, false] true for success, false otherwise.
     def wait_and_retrieve_by_serial(sn)
       sleep REENUMERATION_DELAY
       # The device should now reappear on the usb bus with the Google vendor id.
       # We retrieve it by using its serial number.
-      device = @context.devices(idVendor: GOOGLE_VID).collect do |d|
-        d.serial_number == sn ? d : nil
-      end.compact.first
+      get_device(sn)
 
       if device
         # Retrieve new pointers (check if the old ones should be dereferenced)
