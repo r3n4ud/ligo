@@ -1,6 +1,8 @@
 <!--- coding: utf-8; fill-column: 80 --->
 # ligō
 
+[![Code Climate](https://codeclimate.com/github/nibua-r/ligo.png)](https://codeclimate.com/github/nibua-r/ligo)
+
 * [Homepage](https://github.com/nibua-r/ligo#readme)
 * [Issues](https://github.com/nibua-r/ligo/issues)
 * [Documentation](http://rubydoc.info/gems/ligo/frames)
