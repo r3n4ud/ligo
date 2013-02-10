@@ -1,4 +1,5 @@
+.rbx
+.ruby-version
+.yardoc
 doc/
 pkg/
-.yardoc
-.rbx
