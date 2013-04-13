@@ -1,6 +1,7 @@
 <!--- coding: utf-8; fill-column: 80 --->
 # ligō
 
+[![Dependency Status](https://gemnasium.com/nibua-r/ligo.png)](https://gemnasium.com/nibua-r/ligo)
 [![Code Climate](https://codeclimate.com/github/nibua-r/ligo.png)](https://codeclimate.com/github/nibua-r/ligo)
 
 * [Homepage](https://github.com/nibua-r/ligo#readme)
