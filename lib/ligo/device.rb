@@ -201,7 +201,7 @@ module Ligo
       logger.debug 'set_configuration'
       res = nil
       sn = self.serial_number
-      get_device(sn)
+      device = get_device(sn)
 
       begin
         device.open_interface(0) do |handle|
@@ -318,7 +318,7 @@ module Ligo
       sleep REENUMERATION_DELAY
       # The device should now reappear on the usb bus with the Google vendor id.
       # We retrieve it by using its serial number.
-      get_device(sn)
+      device = get_device(sn)
 
       if device
         # Retrieve new pointers (check if the old ones should be dereferenced)
