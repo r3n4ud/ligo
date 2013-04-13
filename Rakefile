@@ -4,7 +4,7 @@ require 'rubygems'
 require 'rake'
 
 begin
-  gem 'rubygems-tasks', '~> 0.2'
+  gem 'rubygems-tasks', '~> 0.2.4'
   require 'rubygems/tasks'
 
   Gem::Tasks.new
@@ -14,7 +14,7 @@ rescue LoadError => e
 end
 
 begin
-  gem 'rspec', '~> 2.4'
+  gem 'rspec', '~> 2.13'
   require 'rspec/core/rake_task'
 
   RSpec::Core::RakeTask.new
@@ -28,7 +28,7 @@ task :test    => :spec
 task :default => :spec
 
 begin
-  gem 'yard', '~> 0.8'
+  gem 'yard', '~> 0.8.5.2'
   require 'yard'
 
   YARD::Rake::YardocTask.new
@@ -40,7 +40,7 @@ end
 task :doc => :yard
 
 begin
-  gem 'yardstick', '~> 0.8.0'
+  gem 'yardstick', '~> 0.9.5'
 
   require 'yardstick/rake/measurement'
 
