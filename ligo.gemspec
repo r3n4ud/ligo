@@ -19,11 +19,11 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ['lib']
 
-  gem.add_dependency 'libusb', '>= 0.2.2'
+  gem.add_dependency 'libusb', '>= 0.3.4'
 
-  gem.add_development_dependency 'rspec', '~> 2.4'
-  gem.add_development_dependency 'rubygems-tasks', '~> 0.2'
-  gem.add_development_dependency 'yard', '~> 0.8'
-  gem.add_development_dependency 'yardstick', '~> 0.8.0'
-  gem.add_development_dependency 'pry', '~> 0.9.10'
+  gem.add_development_dependency 'rspec', '~> 2.13'
+  gem.add_development_dependency 'rubygems-tasks', '~> 0.2.4'
+  gem.add_development_dependency 'yard', '~> 0.8.5.2'
+  gem.add_development_dependency 'yardstick', '~> 0.9.5'
+  gem.add_development_dependency 'pry', '~> 0.9.12'
 end
