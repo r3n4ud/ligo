@@ -12,7 +12,15 @@ id = {
   serial:       '3678000012345678'
 }
 
-Ligo::Logging.configure_logger_output('/tmp/ligo-sample.log')
+log_file      = 'ligo-sample.log'
+log_file_path = case Ligo.os
+                when :windows
+                  ENV['TEMP']
+                else # :unix, :linux and :macosx
+                  '/tmp'
+                end
+
+Ligo::Logging.configure_logger_output("#{log_file_path}/#{log_file}")
 ctx = Ligo::Context.new
 acc = Ligo::Accessory.new(id)
 dev = ctx.devices.first
