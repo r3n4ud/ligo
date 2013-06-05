@@ -34,4 +34,25 @@ module Ligo
   require 'ligo/accessory'
   require 'ligo/context'
   require 'ligo/device'
+
+  # Return the OS identifier
+  # @return [Symbol] one of :windows, :macosx, :linux or :unix.
+  # @raise [StandardError] if the OS is unknown.
+  def self.os
+    @os ||= (
+             host_os = RbConfig::CONFIG['host_os']
+             case host_os
+             when /mswin|msys|mingw|cygwin|bccwin|wince|emc/
+               :windows
+             when /darwin|mac os/
+               :macosx
+             when /linux/
+               :linux
+             when /solaris|bsd/
+               :unix
+             else
+               raise StandardError, "unknown os: #{host_os.inspect}"
+             end
+             )
+  end
 end
