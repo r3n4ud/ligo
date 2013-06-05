@@ -266,6 +266,8 @@ module Ligo
       end
 
       (res.size == 2 && version >= 1 ) ? version : 0
+    rescue LIBUSB::ERROR_NOT_SUPPORTED
+      0
     end
 
     # Sends identifying string information to the device
