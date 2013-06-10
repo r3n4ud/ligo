@@ -1,5 +1,5 @@
 <!--- coding: utf-8; fill-column: 80 --->
-# ligō
+# ![ligō](https://github.com/nibua-r/ligo-logos/raw/master/logo/ligo.png)
 
 [![Dependency Status](https://gemnasium.com/nibua-r/ligo.png)](https://gemnasium.com/nibua-r/ligo)
 [![Code Climate](https://codeclimate.com/github/nibua-r/ligo.png)](https://codeclimate.com/github/nibua-r/ligo)
