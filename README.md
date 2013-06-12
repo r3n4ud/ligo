@@ -66,7 +66,7 @@ ligō will be nothing without the
 
 At the time of writing, ligō focuses on the GNU/Linux operating system and
 YARV/MRI ruby. ligō has been developed and tested on Debian GNU/Linux with ruby
-1.9.3p327.
+1.9.3p327 and 1.9.3p429.
 
 ligō is useless without Android-side application. A
 [sample LigoTextDemo Android application](https://github.com/nibua-r/LigoTextDemo)
