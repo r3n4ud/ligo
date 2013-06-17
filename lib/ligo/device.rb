@@ -182,12 +182,26 @@ module Ligo
       logger.debug 'start_accessory_mode'
       sn = self.serial_number
 
-      self.open_interface(0) do |handle|
+      # First simple win support for my GNexus, MTP is the first interface. As a
+      # consequence, we use the second one.
+      # TODO: improve interface detection (rescue LIBUSB_NOT_SUPPORTED on
+      # open_interface?)
+      interface_num = case Ligo.os
+                      when :windows
+                        1
+                      else
+                        0
+                      end
+
+      self.open_interface(interface_num) do |handle|
         @handle = handle
         send_accessory_id
         send_start
         @handle = nil
       end
+
+      # On Windows, a GNexus in accessory mode presents the Android Accessory
+      # Interface as the very first interface (i.e. 0).
 
       wait_and_retrieve_by_serial(sn)
     end
