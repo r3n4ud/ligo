@@ -242,8 +242,13 @@ module Ligo
     #   otherwise.
     def aoap?
       @aoap_version = self.get_protocol
-      logger.info "#{self.inspect} supports AOAP version #{@aoap_version}."
-      @aoap_version >= 1
+      aoap_supported = (@aoap_version >= 1)
+      if aoap_supported
+        logger.info "#{self.inspect} supports AOA Protocol version #{@aoap_version}."
+      else
+        logger.info "#{self.inspect} doesn't support AOA Protocol."
+      end
+      aoap_supported
     end
 
     # Check if the current {Device} is in UMS mode
@@ -280,7 +285,7 @@ module Ligo
       end
 
       (res.size == 2 && version >= 1 ) ? version : 0
-    rescue LIBUSB::ERROR_NOT_SUPPORTED
+    rescue LIBUSB::ERROR_NOT_SUPPORTED, LIBUSB::ERROR_PIPE
       0
     end
 
