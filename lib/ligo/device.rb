@@ -234,7 +234,7 @@ module Ligo
     # @return [true, false] true if the {Device} is in accessory mode, false
     #   otherwise.
     def accessory_mode?
-      self.idVendor == GOOGLE_VID
+      (self.idVendor == GOOGLE_VID) && (GOOGLE_PIDS.include? self.idProduct)
     end
 
     # Check if the current {Device} supports AOAP
