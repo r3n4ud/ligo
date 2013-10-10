@@ -23,7 +23,7 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency 'rspec', '~> 2.13'
   gem.add_development_dependency 'rubygems-tasks', '~> 0.2.4'
-  gem.add_development_dependency 'yard', '~> 0.8.5.2'
+  gem.add_development_dependency 'yard', '~> 0.8.7.2'
   gem.add_development_dependency 'yardstick', '~> 0.9.5'
   gem.add_development_dependency 'pry', '~> 0.9.12'
 end
