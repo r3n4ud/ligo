@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.date          = Date.today
   gem.summary       = %q{A ruby utility to create virtual accessories able to communicate with Android devices.}
   gem.description   = %q{Ligo: virtual accessories for Android}
-  gem.license       = 'Apache License, Version 2.0'
+  gem.license       = 'Apache-2.0'
   gem.authors       = ['Renaud AUBIN']
   gem.email         = 'root@renaud.io'
   gem.homepage      = 'https://github.com/nibua-r/ligo#readme'
