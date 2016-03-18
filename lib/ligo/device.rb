@@ -19,6 +19,17 @@ module Ligo
 
   require 'ligo/constants'
 
+  # USB reenumeration delay in seconds
+  @@reenumeration_delay = 1
+
+  def self.setDelay(x)
+    @@reenumeration_delay = x
+  end
+
+  def self.getDelay
+    @@reenumeration_delay
+  end
+
   # This class provides a convenient wrapper class around `LIBUSB::Device` and
   #   implements the Android Open Accessory Protocol to interact with compatible
   #   devices.
@@ -152,7 +163,7 @@ module Ligo
           set_configuration
         rescue LIBUSB::ERROR_NO_DEVICE
           logger.debug '  set_configuration raises LIBUSB::ERROR_NO_DEVICE - Retry'
-          sleep REENUMERATION_DELAY
+          sleep Ligo::getDelay
           # Set configuration may fail
           retry
         end
@@ -322,7 +333,7 @@ module Ligo
     # @api private
     # @return [true, false] true for success, false otherwise.
     def wait_and_retrieve_by_serial(sn)
-      sleep REENUMERATION_DELAY
+      sleep Ligo::getDelay
       # The device should now reappear on the usb bus with the Google vendor id.
       # We retrieve it by using its serial number.
       device = get_device(sn)

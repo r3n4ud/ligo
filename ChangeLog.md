@@ -1,3 +1,7 @@
+### 0.2.0 / 2016-03-18
+
+* Enable to configure the reenumeration delay (i.e. when the device switches from nominal to accessory mode by re-introduce itself on the USB bus)
+
 ### 0.1.2 / 2013-11-14
 
 * Add Windows support

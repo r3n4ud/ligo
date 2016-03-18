@@ -78,7 +78,4 @@ module Ligo
   # Accessory Protocol "Accessory Mode Start Up" commands
   COMMAND_START       = 53
 
-  # USB reenumeration delay in seconds
-  REENUMERATION_DELAY = 1
-
 end
