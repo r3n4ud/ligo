@@ -20,7 +20,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ['lib']
 
-  gem.add_dependency 'libusb', '>= 0.3.4'
+  gem.add_runtime_dependency 'libusb', '~> 0.3', '>= 0.3.4'
 
   gem.add_development_dependency 'rspec', '~> 2.13'
   gem.add_development_dependency 'rubygems-tasks', '~> 0.2.4'
