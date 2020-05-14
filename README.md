@@ -1,11 +1,11 @@
 <!--- coding: utf-8; fill-column: 80 --->
-# ![ligō](https://github.com/nibua-r/ligo-logos/raw/master/logo/ligo.png)
+# ![ligō](https://github.com/r3n4ud/ligo-logos/raw/master/logo/ligo.png)
 
-[![Dependency Status](https://gemnasium.com/nibua-r/ligo.png)](https://gemnasium.com/nibua-r/ligo)
-[![Code Climate](https://codeclimate.com/github/nibua-r/ligo.png)](https://codeclimate.com/github/nibua-r/ligo)
+[![Dependency Status](https://gemnasium.com/r3n4ud/ligo.png)](https://gemnasium.com/r3n4ud/ligo)
+[![Code Climate](https://codeclimate.com/github/r3n4ud/ligo.png)](https://codeclimate.com/github/r3n4ud/ligo)
 
-* [Homepage](https://github.com/nibua-r/ligo#readme)
-* [Issues](https://github.com/nibua-r/ligo/issues)
+* [Homepage](https://github.com/r3n4ud/ligo#readme)
+* [Issues](https://github.com/r3n4ud/ligo/issues)
 * [Documentation](http://rubydoc.info/gems/ligo/frames)
 * [Email](mailto:root at renaud.io)
 
@@ -16,7 +16,7 @@ ligō is a ruby gem implementing the
 to interact with Android devices via USB.
 
 Android-side application is needed to make some use of this project. A
-[sample LigoTextDemo Android application](https://github.com/nibua-r/LigoTextDemo)
+[sample LigoTextDemo Android application](https://github.com/r3n4ud/LigoTextDemo)
 is available for usage demonstration.
 
 ## Features
@@ -69,7 +69,7 @@ YARV/MRI ruby. ligō has been developed and tested on Debian GNU/Linux with ruby
 1.9.3p327 and 1.9.3p429.
 
 ligō is useless without Android-side application. A
-[sample LigoTextDemo Android application](https://github.com/nibua-r/LigoTextDemo)
+[sample LigoTextDemo Android application](https://github.com/r3n4ud/LigoTextDemo)
 is available for usage demonstration.
 
 ## Install
@@ -80,7 +80,7 @@ You may install ligō by using:
 
 Or, you can install it from the github repository:
 
-    $ git clone https://github.com/nibua-r/ligo.git
+    $ git clone https://github.com/r3n4ud/ligo.git
     $ cd ligo
     $ rake install
 
@@ -89,13 +89,13 @@ Or, you can install it from the github repository:
 
 * Write the specs and automate testing!
 * ~~Provide an Android demo application~~ → See
-  [sample LigoTextDemo Android application](https://github.com/nibua-r/LigoTextDemo),
+  [sample LigoTextDemo Android application](https://github.com/r3n4ud/LigoTextDemo),
   more to come soon…
 * Improve the documentation → in progress, a first pass has been made…
 * ~~Release and push the gem to rubygems.org~~
 * Finalize and publish a [celluloid](https://github.com/celluloid/celluloid)-based write-back usage
   sample (already working with the
-  [sample LigoTextDemo Android application](https://github.com/nibua-r/LigoTextDemo) and the
+  [sample LigoTextDemo Android application](https://github.com/r3n4ud/LigoTextDemo) and the
   [libusb 0.3.0 gem](https://github.com/larskanis/libusb) async and polling APIs)
 * Create a wiki with FAQ, supported devices listing, UMS/accessory interactions, etc.
 
